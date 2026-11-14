@@ -46,7 +46,7 @@ function ChatScreen() {
   const focused = useIsFocused();
   return (
     <SafeAreaView style={styles.chat} edges={['top']}>
-      <TalquiChat style={styles.chat} visible={focused} />
+      <TalquiChat style={styles.chat} visible={focused} hideCloseButton />
     </SafeAreaView>
   );
 }

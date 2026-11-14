@@ -56,6 +56,7 @@ export interface TalquiProviderProps {
 interface InlineHost {
   visible: boolean;
   onCloseRequested?: () => void;
+  hideCloseButton?: boolean;
 }
 
 interface TalquiInternals {
@@ -168,6 +169,23 @@ export function TalquiProvider(props: TalquiProviderProps) {
     send('setVisibility', { visible });
   }, [visible, send]);
 
+  // The header's close control follows where the chat is: full screen always
+  // shows it (on iOS it is the only way out); inline it can be turned off.
+  const closeButtonVisible = !inline?.hideCloseButton;
+  const closeButtonRef = useRef(closeButtonVisible);
+  closeButtonRef.current = closeButtonVisible;
+  /** What the loaded page shows. Sent only on a change, so an app that never hides it never sends the command. */
+  const pageCloseButton = useRef(true);
+  const syncCloseButton = useCallback(() => {
+    if (!readyRef.current || pageCloseButton.current === closeButtonRef.current) return;
+    send('setCloseButton', { visible: closeButtonRef.current });
+    pageCloseButton.current = closeButtonRef.current;
+  }, [send]);
+
+  useEffect(() => {
+    syncCloseButton();
+  }, [closeButtonVisible, syncCloseButton]);
+
   const emit = useCallback(<E extends TalquiEventName>(name: E, payload: TalquiEventMap[E]) => {
     listeners.current.get(name)?.forEach((listener) => {
       try {
@@ -184,11 +202,14 @@ export function TalquiProvider(props: TalquiProviderProps) {
     if (Object.keys(state.contactMeta).length) send('setContactMeta', state.contactMeta);
     if (Object.keys(state.sessionMeta).length) send('setSessionMeta', state.sessionMeta);
     send('setVisibility', { visible: visibleRef.current });
+    // A freshly loaded page shows the control again.
+    pageCloseButton.current = true;
+    syncCloseButton();
     if (state.prefill) {
       send('prefill', { text: state.prefill });
       state.prefill = null;
     }
-  }, [send]);
+  }, [send, syncCloseButton]);
 
   const closeOverlay = useCallback(() => setIsOpen(false), []);
   const inlineRef = useRef(inline);

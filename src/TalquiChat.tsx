@@ -12,19 +12,28 @@ export interface TalquiChatProps {
   visible?: boolean;
   /** The user tapped close in the chat header. */
   onCloseRequested?: () => void;
+  /**
+   * Hides the close control in the chat header, which has nothing to close in
+   * a tab. Default `false`. Only affects the chat shown here: `open()` full
+   * screen always keeps it.
+   */
+  hideCloseButton?: boolean;
 }
 
 /**
  * The chat inline, filling its container — for a "Chat" tab or a screen of
  * your own. While it is mounted it owns the chat page, and `open()` does nothing.
  */
-export function TalquiChat({ style, visible = true, onCloseRequested }: TalquiChatProps) {
+export function TalquiChat({ style, visible = true, onCloseRequested, hideCloseButton = false }: TalquiChatProps) {
   const { internals } = useTalquiContext();
-  const host = useRef({ visible, onCloseRequested });
-  host.current = { visible, onCloseRequested };
+  const host = useRef({ visible, onCloseRequested, hideCloseButton });
+  host.current = { visible, onCloseRequested, hideCloseButton };
 
   useEffect(() => internals.registerInline(host.current), [internals]);
-  useEffect(() => internals.updateInline({ visible, onCloseRequested }), [internals, visible, onCloseRequested]);
+  useEffect(
+    () => internals.updateInline({ visible, onCloseRequested, hideCloseButton }),
+    [internals, visible, onCloseRequested, hideCloseButton],
+  );
 
   return <>{internals.renderWebView(style as object | undefined)}</>;
 }

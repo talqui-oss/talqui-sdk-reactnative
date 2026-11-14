@@ -96,11 +96,11 @@ import { TalquiChat } from '@talqui-oss/react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 function ChatScreen() {
-  return <TalquiChat style={{ flex: 1 }} visible={useIsFocused()} />;
+  return <TalquiChat style={{ flex: 1 }} visible={useIsFocused()} hideCloseButton />;
 }
 ```
 
-`visible` tells the SDK whether the tab is on screen, so unread messages are counted while it is not.
+`visible` tells the SDK whether the tab is on screen, so unread messages are counted while it is not. `hideCloseButton` removes the close button from the chat header, which has nothing to close in a tab. Full screen always keeps it.
 
 ## Identify users
 
@@ -196,6 +196,7 @@ await talqui.logout();
 | `style` | `ViewStyle` | Usually `{ flex: 1 }`. |
 | `visible` | `boolean` | Whether this screen is on screen. |
 | `onCloseRequested` | `() => void` | The user tapped close in the header. |
+| `hideCloseButton` | `boolean` | Hides the header's close button here. Default `false`. |
 
 ## Permissions
 
