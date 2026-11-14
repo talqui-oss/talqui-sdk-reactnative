@@ -1,0 +1,39 @@
+{
+  "protocol": 1,
+  "description": "One example of every talqui.bridge.v1 message. The WebChat must keep accepting every command and emitting every event listed here; SDKs copy this file and test their parsing against it.",
+  "commands": {
+    "valid": [
+      { "talqui": 1, "kind": "command", "name": "setContact", "id": "c-1", "payload": { "name": "Ana Souza", "email": "ana@example.test", "phone": "+5511999990000" } },
+      { "talqui": 1, "kind": "command", "name": "setContactMeta", "id": "c-2", "payload": { "plan": "pro", "seats": "3", "trial": null } },
+      { "talqui": 1, "kind": "command", "name": "setSessionMeta", "id": "c-3", "payload": { "order_id": "4821", "step": "checkout" } },
+      { "talqui": 1, "kind": "command", "name": "prefill", "id": "c-4", "payload": { "text": "Hi, I need help with order 4821" } },
+      { "talqui": 1, "kind": "command", "name": "setVisibility", "id": "c-5", "payload": { "visible": false } },
+      { "talqui": 1, "kind": "command", "name": "reset", "id": "c-6", "payload": {} }
+    ],
+    "invalid": [
+      { "why": "unknown command", "expect": "unknown_command", "message": { "talqui": 1, "kind": "command", "name": "identify", "id": "c-7", "payload": {} } },
+      { "why": "key with a dot", "expect": "invalid_payload", "message": { "talqui": 1, "kind": "command", "name": "setSessionMeta", "id": "c-8", "payload": { "a.b": "x" } } },
+      { "why": "nested value", "expect": "invalid_payload", "message": { "talqui": 1, "kind": "command", "name": "setContactMeta", "id": "c-9", "payload": { "plan": { "tier": "pro" } } } },
+      { "why": "key that names a prototype slot", "expect": "invalid_payload", "message": { "talqui": 1, "kind": "command", "name": "setContactMeta", "id": "c-10", "payload": { "constructor": "x" } } },
+      { "why": "empty prefill", "expect": "invalid_payload", "message": { "talqui": 1, "kind": "command", "name": "prefill", "id": "c-11", "payload": { "text": "" } } },
+      { "why": "visibility is not a boolean", "expect": "invalid_payload", "message": { "talqui": 1, "kind": "command", "name": "setVisibility", "id": "c-12", "payload": { "visible": "yes" } } },
+      { "why": "not a command envelope", "expect": "invalid_payload", "message": { "talqui": 1, "kind": "event", "name": "ready", "payload": {} } },
+      { "why": "newer protocol: ignored without an error", "expect": null, "message": { "talqui": 2, "kind": "command", "name": "setContact", "payload": {} } }
+    ]
+  },
+  "events": [
+    { "talqui": 1, "kind": "event", "name": "ready", "payload": { "protocol": 1, "webchatVersion": "0.4.0", "identity": { "kind": "anonymous", "anonymousId": "8b0c6a0e-6a55-4a0e-9a7e-1b6f0f6e2c11" } } },
+    { "talqui": 1, "kind": "event", "name": "ready", "payload": { "protocol": 1, "webchatVersion": "0.4.0", "identity": { "kind": "identified" } } },
+    { "talqui": 1, "kind": "event", "name": "sessionStarted", "payload": { "sessionId": "9d22f259-424e-499a-8fc4-e536407cc8a5" } },
+    { "talqui": 1, "kind": "event", "name": "sessionStarted", "payload": { "sessionId": null } },
+    { "talqui": 1, "kind": "event", "name": "messageSent", "payload": { "messageId": "wc:0b1f1c53-0a1d-4a57-b8c5-3f2a7c1d9e10", "type": "text" } },
+    { "talqui": 1, "kind": "event", "name": "messageReceived", "payload": { "messageId": "5c1d7a3e-2b9f-4c6e-8a7d-3e5f1b2c4d02", "type": "text", "preview": "Hello! How can I help?", "operatorName": "Marina" } },
+    { "talqui": 1, "kind": "event", "name": "messageReceived", "payload": { "messageId": "6d2e8b4f-3c0a-4d7f-9b8e-4f6a2c3d5e13", "type": "image", "preview": "", "operatorName": null } },
+    { "talqui": 1, "kind": "event", "name": "unreadChanged", "payload": { "count": 2 } },
+    { "talqui": 1, "kind": "event", "name": "closeRequested", "payload": {} },
+    { "talqui": 1, "kind": "event", "name": "openUrl", "payload": { "url": "https://example.test/help" } },
+    { "talqui": 1, "kind": "event", "name": "resetDone", "payload": {} },
+    { "talqui": 1, "kind": "event", "name": "error", "payload": { "code": "unknown_command", "message": "Unknown command \"identify\".", "commandId": "c-7" } },
+    { "talqui": 1, "kind": "event", "name": "error", "payload": { "code": "invalid_params", "message": "T_ID and PC_ID must be the tenant and WebChat connection UUIDs." } }
+  ]
+}

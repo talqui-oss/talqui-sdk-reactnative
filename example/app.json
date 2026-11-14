@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Talqui Example",
+    "slug": "talqui-react-native-example",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "chat.talqui.example",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Take photos to send in the support chat.",
+        "NSMicrophoneUsageDescription": "Record voice messages for the support chat.",
+        "NSPhotoLibraryUsageDescription": "Choose photos to send in the support chat."
+      }
+    },
+    "android": {
+      "package": "chat.talqui.example",
+      "softwareKeyboardLayoutMode": "resize",
+      "permissions": ["android.permission.CAMERA", "android.permission.RECORD_AUDIO", "android.permission.MODIFY_AUDIO_SETTINGS"]
+    }
+  }
+}

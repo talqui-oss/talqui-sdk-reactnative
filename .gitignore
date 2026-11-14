@@ -1,0 +1,9 @@
+node_modules/
+dist/
+example/node_modules/
+example/.expo/
+example/ios/
+example/android/
+.DS_Store
+*.log
+TALQUI_GUIDELINES.md

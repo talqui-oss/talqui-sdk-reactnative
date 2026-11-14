@@ -1,0 +1,55 @@
+{
+  "name": "@talqui-oss/react-native",
+  "version": "0.1.0",
+  "description": "Add Talqui live chat to your React Native and Expo app",
+  "license": "MIT",
+  "author": "Talqui",
+  "homepage": "https://docs.talqui.chat/guides/chat-sdks/react-native",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talqui-oss/react-native-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/talqui-oss/react-native-sdk/issues"
+  },
+  "keywords": ["react-native", "expo", "chat", "live-chat", "customer-support", "webchat", "talqui"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "react-native": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "react-native": "./src/index.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src", "README.md", "LICENSE.md"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react --external react-native --external react-native-webview --external @react-native-async-storage/async-storage",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test test/*.test.ts"
+  },
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": ">=1.21",
+    "react": ">=18",
+    "react-native": ">=0.73",
+    "react-native-webview": ">=13"
+  },
+  "devDependencies": {
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@types/react": "19.2.14",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-webview": "13.16.1",
+    "tsup": "8.5.1",
+    "typescript": "5.9.3"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "engines": {
+    "node": ">=20"
+  }
+}
