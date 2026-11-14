@@ -93,7 +93,7 @@ Every message is one JSON object:
 
 
 - Flat object only. Keys match `^[a-z0-9_-]{1,60}$` (lowercase letters, digits, `_`, `-`): no dots, no `$`, no `:` (blocks Mongo operator and dotted-path injection, and the platform's own colon-separated keys). `__proto__`, `constructor` and `prototype` are refused. SDKs lowercase keys and warn when they had to.
-- **Contact keys are stored with the `app_` prefix** (`setContactMeta({ plan: "pro" })` is stored as `contactMeta.app_plan`). Plugins and bot flows keep keys of their own on the contact and trust them (a provider's contract id, a CRM link); app data must never be able to overwrite or shadow them.
+- **Contact keys are stored with the `chat_` prefix** (`setContactMeta({ plan: "pro" })` is stored as `contactMeta.chat_plan`). Plugins and bot flows keep keys of their own on the contact and trust them (a provider's contract id, a CRM link); app data must never be able to overwrite or shadow them.
 - Values: string (trimmed, max 255 chars) or `null` (delete). SDKs convert numbers and booleans to strings (`3` → `"3"`, `true` → `"true"`); objects and arrays are rejected.
 - Max 20 keys per command. At most 50 app keys per contact and 50 keys per session: a new key beyond that is reported as failed; changing or removing an existing key always works.
 - Session keys always live under `sessionMeta.custom`, so they can never overwrite platform keys (`device`, `tlID`, …). The key `sdk` is written by the WebChat itself.
