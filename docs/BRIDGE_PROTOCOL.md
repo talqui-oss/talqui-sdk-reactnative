@@ -66,7 +66,7 @@ Every message is one JSON object:
 
 | Name | Payload | Effect |
 |---|---|---|
-| `setContact` | `{ name?: string, email?: string, phone?: string }` | Fills the contact traits that ride on every outbound message . When the traits cover every required pre-chat field, the form is considered submitted. |
+| `setContact` | `{ name?: string, email?: string, phone?: string }` | Fills the contact traits that ride on every outbound message. When the traits cover every required pre-chat field, the form is considered submitted. |
 | `setContactMeta` | flat object, see [Metadata rules](#6-metadata-rules) | Written to the visitor's contact (`contactMeta.<key>`) through the WebChat API as soon as the contact exists, and immediately on later calls. Before the first message it stays pending. `null` deletes a key. |
 | `setSessionMeta` | flat object, see [Metadata rules](#6-metadata-rules) | Written to the visitor's active conversation (`sessionMeta.custom.<key>`) as soon as one exists, and immediately on later calls, so it can change mid-conversation. Re-applied to the next conversation when one starts. `null` deletes a key. |
 | `prefill` | `{ text: string }` (1..1000 chars) | Seeds the composer. Never auto-sends (unlike `MSG`). |
