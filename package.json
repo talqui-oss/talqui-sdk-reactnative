@@ -7,10 +7,10 @@
   "homepage": "https://docs.talqui.chat/guides/chat-sdks/react-native",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/talqui-oss/react-native-sdk.git"
+    "url": "git+https://github.com/talqui-oss/talqui-sdk-reactnative.git"
   },
   "bugs": {
-    "url": "https://github.com/talqui-oss/react-native-sdk/issues"
+    "url": "https://github.com/talqui-oss/talqui-sdk-reactnative/issues"
   },
   "keywords": ["react-native", "expo", "chat", "live-chat", "customer-support", "webchat", "talqui"],
   "main": "./dist/index.js",
