@@ -23,7 +23,9 @@
 
 ## Introduction
 
-[Talqui](https://talqui.chat) brings WhatsApp, Instagram, Mercado Livre, your website and your app into one inbox. This package adds the Talqui chat to a React Native app: drop in a provider, call `open()` from any button, and the conversation lands in the same inbox your team already uses, with history, attachments, voice messages, bots and AI agents.
+[Talqui](https://talqui.chat) is the communication layer for customer service and sales. It connects every channel your customers use, including your website and your app, to one workspace where AI agents, chatbots and human teams work together: build chatbots without code, put AI agents on the front line for support and sales, hand conversations over to people when it matters, and plug everything into your own systems.
+
+This package brings that experience into your React Native app. Drop in a provider, call `open()` from any button, and each conversation lands in the same workspace as every other channel, with history, attachments, voice messages, chatbots and AI agents.
 
 ## Features
 
