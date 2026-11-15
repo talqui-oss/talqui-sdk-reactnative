@@ -22,7 +22,8 @@ export interface TalquiChatProps {
 
 /**
  * The chat inline, filling its container — for a "Chat" tab or a screen of
- * your own. While it is mounted it owns the chat page, and `open()` does nothing.
+ * your own. While it is on screen `open()` does nothing; once the screen is
+ * left (a tab navigator keeps it mounted), `open()` shows the chat full screen.
  */
 export function TalquiChat({ style, visible = true, onCloseRequested, hideCloseButton = false }: TalquiChatProps) {
   const { internals } = useTalquiContext();
@@ -35,5 +36,5 @@ export function TalquiChat({ style, visible = true, onCloseRequested, hideCloseB
     [internals, visible, onCloseRequested, hideCloseButton],
   );
 
-  return <>{internals.renderWebView(style as object | undefined)}</>;
+  return <>{internals.renderInline(style as object | undefined)}</>;
 }

@@ -60,7 +60,8 @@ interface InlineHost {
 }
 
 interface TalquiInternals {
-  renderWebView(style: object | undefined): ReactNode;
+  /** The chat page for <TalquiChat />, or nothing while the full-screen overlay holds it. */
+  renderInline(style: object | undefined): ReactNode;
   registerInline(host: InlineHost): () => void;
   updateInline(host: InlineHost): void;
 }
@@ -134,6 +135,14 @@ export function TalquiProvider(props: TalquiProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [overlayMounted, setOverlayMounted] = useState(false);
   const [inline, setInline] = useState<InlineHost | null>(null);
+  /**
+   * Where the one chat page lives. A native view cannot move between parents,
+   * so changing owner reloads the page (the conversation comes back by itself).
+   * The owner only changes when it must: `open()` takes the page to the
+   * overlay, and it goes back to <TalquiChat /> when that screen is on screen.
+   * A tab navigator keeps a visited tab mounted, so "mounted" is not enough.
+   */
+  const [owner, setOwner] = useState<'overlay' | 'inline'>('overlay');
   const [appActive, setAppActive] = useState(AppState.currentState === 'active');
 
   useEffect(() => {
@@ -161,7 +170,13 @@ export function TalquiProvider(props: TalquiProviderProps) {
     [log],
   );
 
-  const visible = appActive && (inline ? inline.visible : isOpen);
+  useEffect(() => {
+    if (!inline) setOwner('overlay');
+    else if (inline.visible && !isOpen) setOwner('inline');
+  }, [inline, isOpen]);
+
+  const inlineOwns = owner === 'inline' && inline !== null;
+  const visible = appActive && (inlineOwns ? inline.visible : isOpen);
   const visibleRef = useRef(visible);
   visibleRef.current = visible;
 
@@ -171,7 +186,7 @@ export function TalquiProvider(props: TalquiProviderProps) {
 
   // The header's close control follows where the chat is: full screen always
   // shows it (on iOS it is the only way out); inline it can be turned off.
-  const closeButtonVisible = !inline?.hideCloseButton;
+  const closeButtonVisible = !(inlineOwns && inline.hideCloseButton);
   const closeButtonRef = useRef(closeButtonVisible);
   closeButtonRef.current = closeButtonVisible;
   /** What the loaded page shows. Sent only on a change, so an app that never hides it never sends the command. */
@@ -214,6 +229,8 @@ export function TalquiProvider(props: TalquiProviderProps) {
   const closeOverlay = useCallback(() => setIsOpen(false), []);
   const inlineRef = useRef(inline);
   inlineRef.current = inline;
+  const inlineOwnsRef = useRef(inlineOwns);
+  inlineOwnsRef.current = inlineOwns;
 
   const handleMessage = useCallback(
     (raw: string) => {
@@ -243,7 +260,7 @@ export function TalquiProvider(props: TalquiProviderProps) {
           else void Linking.openURL(event.payload.url).catch(() => undefined);
           break;
         case 'closeRequested':
-          if (inlineRef.current) inlineRef.current.onCloseRequested?.();
+          if (inlineOwnsRef.current) inlineRef.current?.onCloseRequested?.();
           else closeOverlay();
           break;
         case 'error':
@@ -274,13 +291,13 @@ export function TalquiProvider(props: TalquiProviderProps) {
 
   // --- Android back button closes the full-screen chat ---------------------------------------
   useEffect(() => {
-    if (!isOpen || inline) return undefined;
+    if (!isOpen) return undefined;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       closeOverlay();
       return true;
     });
     return () => subscription.remove();
-  }, [isOpen, inline, closeOverlay]);
+  }, [isOpen, closeOverlay]);
 
   // --- public API -----------------------------------------------------------------------------
   const setContact = useCallback(
@@ -379,7 +396,11 @@ export function TalquiProvider(props: TalquiProviderProps) {
     }
     return {
       open: () => {
-        if (inlineRef.current) warn('open() ignored: <TalquiChat /> is on screen and already shows the chat.');
+        if (inlineRef.current?.visible) {
+          warn('open() ignored: <TalquiChat /> is on screen and already shows the chat.');
+          return;
+        }
+        setOwner('overlay');
         setOverlayMounted(true);
         setIsOpen(true);
       },
@@ -426,15 +447,16 @@ export function TalquiProvider(props: TalquiProviderProps) {
 
   const internals = useMemo<TalquiInternals>(
     () => ({
-      renderWebView,
+      renderInline: (style) => (inlineOwns ? renderWebView(style) : null),
       registerInline: (host) => {
         setInline(host);
-        setIsOpen(false);
+        // A chat screen coming on screen takes over from the full-screen chat.
+        if (host.visible) setIsOpen(false);
         return () => setInline(null);
       },
       updateInline: (host) => setInline(host),
     }),
-    [renderWebView],
+    [renderWebView, inlineOwns],
   );
 
   const value = useMemo(() => ({ api, internals, subscribe }), [api, internals, subscribe]);
@@ -442,8 +464,8 @@ export function TalquiProvider(props: TalquiProviderProps) {
   return (
     <TalquiContext.Provider value={value}>
       {children}
-      {/* One chat page at a time: while <TalquiChat /> is on screen it owns the WebView. */}
-      {supported && overlayMounted && !inline && (
+      {/* One chat page at a time, held by its owner (see `owner`). */}
+      {supported && overlayMounted && !inlineOwns && (
         <View style={[styles.overlay, !isOpen && styles.hidden]} pointerEvents={isOpen ? 'auto' : 'none'}>
           {renderWebView(undefined)}
         </View>
