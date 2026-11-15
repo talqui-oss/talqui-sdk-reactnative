@@ -30,3 +30,7 @@ cd example && npm install && npx expo start   # example app, runs in Expo Go
 - `logout()` must leave nothing of the previous user: storage key removed, replay state cleared, page remounted.
 - The bridge protocol is additive only. Never send a command the WebChat does not document.
 - Code, comments and docs in English.
+
+## Releasing
+
+Bump `version` in `package.json` and add its section to `CHANGELOG.md` in a PR. Merging to `main` runs `.github/workflows/release.yml`: typecheck, tests and build, then `npm publish` through npm trusted publishing (OIDC, no token), a `vX.Y.Z` tag and a GitHub release. A pushed `v*-beta.N` tag publishes to the `beta` dist-tag. Never publish from a laptop.

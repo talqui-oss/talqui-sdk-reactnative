@@ -1,0 +1,89 @@
+name: release
+
+# Publishes to npm through trusted publishing (OIDC), with no npm token anywhere:
+# - main: when package.json carries a version that has no tag yet, publish it and tag the commit.
+# - a pushed `v*` tag: publish that version (a prerelease like `v0.2.0-beta.1` goes to `beta`).
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Resolve the version to publish
+        id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          tag="v$(node -p 'require("./package.json").version')"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "Nothing to release: $tag is already tagged"
+          else
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.version.outputs.tag
+        uses: pnpm/action-setup@v4
+      - if: steps.version.outputs.tag
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or later.
+      - if: steps.version.outputs.tag
+        run: npm install --global npm@^11.5.1
+      - if: steps.version.outputs.tag
+        run: pnpm install --frozen-lockfile
+      - if: steps.version.outputs.tag
+        run: pnpm typecheck && pnpm test && pnpm build
+      - if: steps.version.outputs.tag
+        name: Publish
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if [[ "v$(node -p 'require("./package.json").version')" != "$TAG" ]]; then
+            echo "package.json version does not match $TAG" >&2
+            exit 1
+          fi
+          # Already on npm (the first version is published by hand): only tag and release.
+          if npm view "$(node -p 'require("./package.json").name')@${TAG#v}" version >/dev/null 2>&1; then
+            echo "${TAG#v} is already on npm"
+          elif [[ "$TAG" == *-* ]]; then
+            npm publish --tag beta
+          else
+            npm publish
+          fi
+      # Tagged after publishing, so a failed publish can be retried by re-running the job.
+      - if: steps.version.outputs.new
+        run: |
+          git tag "${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+      # Stable releases use their CHANGELOG.md section; prereleases list the commits since the last tag.
+      - if: steps.version.outputs.tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if [[ "$TAG" == *-* ]]; then
+            gh release create "$TAG" --title "$TAG" --verify-tag --prerelease --generate-notes
+          else
+            awk '/^##? \[?[0-9]/{if (found) exit; found=1; next} found' CHANGELOG.md > notes.md
+            gh release create "$TAG" --title "$TAG" --verify-tag --latest --notes-file notes.md
+          fi
