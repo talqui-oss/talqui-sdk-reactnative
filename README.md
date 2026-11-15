@@ -34,6 +34,27 @@
 - **Safe logout.** One call and the next person on the phone starts from nothing.
 - **Small surface.** One provider, two hooks, one component. Fully typed.
 
+## Screenshots
+
+What your users see, from the [example app](https://github.com/talqui-oss/talqui-sdk-reactnative/tree/main/example) on iOS.
+
+<table align="center">
+  <tr>
+    <td width="33%">
+      <img src="https://raw.githubusercontent.com/talqui-oss/talqui-sdk-reactnative/main/.github/assets/screenshot-1-unread.png" alt="Unread count in the host app" />
+      <p align="center"><strong>Unread count</strong><br />Replies that arrive while the chat is closed</p>
+    </td>
+    <td width="33%">
+      <img src="https://raw.githubusercontent.com/talqui-oss/talqui-sdk-reactnative/main/.github/assets/screenshot-2-fullscreen.png" alt="Full screen chat with text, an image and a voice message" />
+      <p align="center"><strong>Full screen chat</strong><br />Text, images and voice messages</p>
+    </td>
+    <td width="33%">
+      <img src="https://raw.githubusercontent.com/talqui-oss/talqui-sdk-reactnative/main/.github/assets/screenshot-3-inline-tab.png" alt="The chat inline in a tab" />
+      <p align="center"><strong>Inline in a tab</strong><br /><code>&lt;TalquiChat hideCloseButton /&gt;</code></p>
+    </td>
+  </tr>
+</table>
+
 ## Requirements
 
 | | Minimum |
