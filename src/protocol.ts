@@ -7,7 +7,7 @@ import type { TalquiEventMap, TalquiEventName, TalquiMeta } from './types';
  */
 export const PROTOCOL = 1;
 export const DEFAULT_BASE_URL = 'https://webchat.talqui.chat';
-export const SDK_LABEL = 'react-native@0.1.1';
+export const SDK_LABEL = 'react-native@0.2.0';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 export const IDENTITY_PATTERN = /^[A-Za-z0-9_-]{8,128}$/;

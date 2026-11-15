@@ -1,4 +1,4 @@
-## Unreleased
+## 0.2.0
 
 - Push notifications: `setPushToken`, `handlePush` and `isTalquiPush`. `logout()` unlinks the device token from the user.
 
