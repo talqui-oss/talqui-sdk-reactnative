@@ -190,6 +190,32 @@ Call it when your user logs out. It forgets the user on this device, clears ever
 await talqui.logout();
 ```
 
+## Push notifications
+
+When your team, a bot or an AI agent answers while the user is away, Talqui can notify them. Pick how in app.talqui.chat → Plugins → WebChat → **Notificações**:
+
+- **Through Talqui**: upload a service account of your Firebase project there, then hand the device token to the SDK. Talqui sends the push with your Firebase project.
+- **Webhook**: Talqui posts a signed event to your backend, which notifies the user however you like. Nothing to do in the app. Send your own user id with `setContactMeta({ user_id: … })` to receive it in the event.
+
+With [@react-native-firebase/messaging](https://rnfirebase.io/messaging/usage):
+
+```tsx
+const talqui = useTalqui();
+
+useEffect(() => {
+  messaging().getToken().then(talqui.setPushToken);
+  const unsubscribeRefresh = messaging().onTokenRefresh(talqui.setPushToken);
+  // Open the chat when the user taps a Talqui notification.
+  const unsubscribeTap = messaging().onNotificationOpenedApp((message) => talqui.handlePush(message.data));
+  return () => {
+    unsubscribeRefresh();
+    unsubscribeTap();
+  };
+}, []);
+```
+
+`logout()` unlinks the token from the user, so the next person on the phone never gets their replies. The user is only notified when the chat is not on screen.
+
 ## API
 
 ### `<TalquiProvider>`
@@ -214,6 +240,8 @@ await talqui.logout();
 | `setContactMeta(meta)` / `setSessionMeta(meta)` | Custom data, see [Metadata](#metadata). |
 | `prefill(text)` | Puts text in the message box. The user still decides to send it. |
 | `logout()` | Forgets the user and starts a fresh visitor. |
+| `setPushToken(token)` | The device's FCM token, see [Push notifications](#push-notifications). |
+| `handlePush(data)` | Opens the chat for a tapped Talqui notification; returns whether it was one. `isTalquiPush(data)` is also exported. |
 | `unreadCount`, `isReady`, `isOpen` | Current state. |
 
 ### `<TalquiChat>`

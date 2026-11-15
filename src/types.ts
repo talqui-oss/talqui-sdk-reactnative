@@ -62,6 +62,14 @@ export interface TalquiApi {
   prefill(text: string): void;
   /** Call it when your user logs out: forgets this user and starts a fresh anonymous visitor. */
   logout(): Promise<void>;
+  /**
+   * The device's Firebase Cloud Messaging token, so a reply reaches the user while the app is
+   * closed. Works when the WebChat connection sends notifications "through Talqui" with your
+   * Firebase project (Settings → WebChat → Notificações). Call it at startup and on token refresh.
+   */
+  setPushToken(token: string): void;
+  /** Opens the chat for a tapped Talqui notification. Returns whether it was one. */
+  handlePush(data: Record<string, unknown> | null | undefined): boolean;
   /** Messages received while the chat was not on screen. */
   unreadCount: number;
   /** Whether the chat is loaded and accepting commands. */
