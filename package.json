@@ -1,7 +1,7 @@
 {
   "name": "@talqui-oss/react-native",
   "version": "0.1.0",
-  "description": "Add Talqui live chat to your React Native and Expo app",
+  "description": "Live chat SDK for React Native and Expo: in-app customer support chat with your team, bots and AI agents.",
   "license": "MIT",
   "author": "Talqui",
   "homepage": "https://docs.talqui.chat/guides/chat-sdks/react-native",
@@ -12,7 +12,28 @@
   "bugs": {
     "url": "https://github.com/talqui-oss/talqui-sdk-reactnative/issues"
   },
-  "keywords": ["react-native", "expo", "chat", "live-chat", "customer-support", "webchat", "talqui"],
+  "keywords": [
+    "react-native",
+    "expo",
+    "live-chat",
+    "chat",
+    "chat-sdk",
+    "in-app-chat",
+    "in-app-messaging",
+    "messaging",
+    "customer-support",
+    "customer-service",
+    "support-chat",
+    "helpdesk",
+    "chat-widget",
+    "chatbot",
+    "ai-agent",
+    "omnichannel",
+    "whatsapp",
+    "ios",
+    "android",
+    "talqui"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,7 +47,12 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "src", "README.md", "LICENSE.md"],
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE.md"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react --external react-native --external react-native-webview --external @react-native-async-storage/async-storage",
@@ -51,5 +77,8 @@
   "packageManager": "pnpm@10.14.0",
   "engines": {
     "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
