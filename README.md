@@ -5,7 +5,7 @@
 <br />
 <div align="center">
 
-[![npm](https://img.shields.io/npm/v/@talqui-oss/react-native?color=cb3837&logo=npm)](https://www.npmjs.com/package/@talqui-oss/react-native)
+[![npm](https://img.shields.io/npm/v/@talqui-oss/talqui-sdk-reactnative?color=cb3837&logo=npm)](https://www.npmjs.com/package/@talqui-oss/talqui-sdk-reactnative)
 [![Expo Go](https://img.shields.io/badge/Expo%20Go-ready-000020?logo=expo&logoColor=white)](https://expo.dev/go)
 [![React Native](https://img.shields.io/badge/react--native-%3E%3D0.73-61dafb?logo=react&logoColor=white)](https://reactnative.dev)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/talqui-oss/talqui-sdk-reactnative/blob/main/LICENSE.md)
@@ -14,7 +14,7 @@
 <div align="center">
 <a href="https://docs.talqui.chat/guides/chat-sdks/react-native">Documentation</a>
 <span> · </span>
-<a href="https://www.npmjs.com/package/@talqui-oss/react-native">npm</a>
+<a href="https://www.npmjs.com/package/@talqui-oss/talqui-sdk-reactnative">npm</a>
 <span> · </span>
 <a href="./example">Example app</a>
 <span> · </span>
@@ -66,7 +66,7 @@ What your users see, from the [example app](https://github.com/talqui-oss/talqui
 ## Install
 
 ```bash
-npx expo install @talqui-oss/react-native react-native-webview @react-native-async-storage/async-storage
+npx expo install @talqui-oss/talqui-sdk-reactnative react-native-webview @react-native-async-storage/async-storage
 ```
 
 Bare React Native: install the same three packages with your package manager, then run `cd ios && pod install`.
@@ -85,7 +85,7 @@ You need two values from your Talqui workspace, both on **app.talqui.chat → Pl
 Wrap your app once:
 
 ```tsx
-import { TalquiProvider } from '@talqui-oss/react-native';
+import { TalquiProvider } from '@talqui-oss/talqui-sdk-reactnative';
 
 export default function App() {
   return (
@@ -99,7 +99,7 @@ export default function App() {
 Open the chat from anywhere below it:
 
 ```tsx
-import { useTalqui } from '@talqui-oss/react-native';
+import { useTalqui } from '@talqui-oss/talqui-sdk-reactnative';
 import { Button } from 'react-native';
 
 function Home() {
@@ -113,7 +113,7 @@ That's it. The chat opens full screen and closes with the header button or the A
 ### Inline, in a tab
 
 ```tsx
-import { TalquiChat } from '@talqui-oss/react-native';
+import { TalquiChat } from '@talqui-oss/talqui-sdk-reactnative';
 import { useIsFocused } from '@react-navigation/native';
 
 function ChatScreen() {
@@ -154,7 +154,7 @@ Keys use lowercase letters, digits, `_` and `-` (up to 60 chars). Values are str
 ## Events
 
 ```tsx
-import { useTalqui, useTalquiEvent } from '@talqui-oss/react-native';
+import { useTalqui, useTalquiEvent } from '@talqui-oss/talqui-sdk-reactnative';
 
 useTalquiEvent('messageReceived', (event) => {
   console.log(`${event.operatorName ?? 'Support'}: ${event.preview}`);

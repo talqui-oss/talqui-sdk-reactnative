@@ -1,5 +1,5 @@
 {
-  "name": "@talqui-oss/react-native",
+  "name": "@talqui-oss/talqui-sdk-reactnative",
   "version": "0.1.0",
   "description": "Live chat SDK for React Native and Expo: in-app customer support chat with your team, bots and AI agents.",
   "license": "MIT",

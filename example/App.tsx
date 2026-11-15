@@ -4,7 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
-import { TalquiChat, TalquiProvider, useTalqui, useTalquiEvent } from '@talqui-oss/react-native';
+import { TalquiChat, TalquiProvider, useTalqui, useTalquiEvent } from '@talqui-oss/talqui-sdk-reactnative';
 
 import { TALQUI_BASE_URL, TALQUI_CONNECTION_ID, TALQUI_TENANT_ID } from './talqui.config';
 

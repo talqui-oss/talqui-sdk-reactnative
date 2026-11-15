@@ -2,7 +2,7 @@
 
 > If a `TALQUI_GUIDELINES.md` file exists at the repository root, read it before doing anything else. It is mandatory for maintainers.
 
-`@talqui-oss/react-native`: the Talqui live chat for React Native and Expo. A thin layer over `react-native-webview` that hosts the Talqui WebChat (`https://webchat.talqui.chat`) and talks to it through the bridge protocol in `docs/BRIDGE_PROTOCOL.md`.
+`@talqui-oss/talqui-sdk-reactnative`: the Talqui live chat for React Native and Expo. A thin layer over `react-native-webview` that hosts the Talqui WebChat (`https://webchat.talqui.chat`) and talks to it through the bridge protocol in `docs/BRIDGE_PROTOCOL.md`.
 
 ## Commands
 

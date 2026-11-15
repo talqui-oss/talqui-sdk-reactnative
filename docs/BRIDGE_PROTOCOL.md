@@ -1,7 +1,7 @@
 
 # Talqui bridge protocol v1
 
-Contract between the Talqui WebChat (served at `https://webchat.talqui.chat`) and the native SDKs that host it inside a WebView (`@talqui-oss/react-native`, `talqui_flutter`, and later Swift/Kotlin). The same vocabulary is exposed to websites as `window.$talqui` (section 9). Written in English because it is copied verbatim into the public repositories and into docs.talqui.chat.
+Contract between the Talqui WebChat (served at `https://webchat.talqui.chat`) and the native SDKs that host it inside a WebView (`@talqui-oss/talqui-sdk-reactnative`, `talqui_sdk_flutter`, and later Swift/Kotlin). The same vocabulary is exposed to websites as `window.$talqui` (section 9). Written in English because it is copied verbatim into the public repositories and into docs.talqui.chat.
 
 **The WebChat is deployed continuously; SDK versions live inside customer apps for years.** Every rule below exists so that an app built today keeps working against the WebChat deployed in 2028. Changes to this protocol are additive only (see [Compatibility](#7-compatibility)).
 
