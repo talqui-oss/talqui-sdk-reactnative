@@ -3,7 +3,7 @@
  *
  * Off in this example, because it runs in Expo Go and Firebase needs native code. To try it:
  *
- *   1. In app.talqui.chat → Plugins → WebChat → Notificações, choose "Via Talqui" and upload a
+ *   1. In app.talqui.chat → Plugins → WebChat → Notificações, choose "Pela Talqui" and upload a
  *      service account of YOUR Firebase project (role "Firebase Cloud Messaging API Admin" is enough).
  *   2. Add the app to that Firebase project and download google-services.json (Android) and
  *      GoogleService-Info.plist (iOS). On iOS, also upload your APNs key in Firebase and set
