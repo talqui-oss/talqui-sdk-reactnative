@@ -9,6 +9,8 @@
       { "talqui": 1, "kind": "command", "name": "prefill", "id": "c-4", "payload": { "text": "Hi, I need help with order 4821" } },
       { "talqui": 1, "kind": "command", "name": "setVisibility", "id": "c-5", "payload": { "visible": false } },
       { "talqui": 1, "kind": "command", "name": "setCloseButton", "id": "c-7", "payload": { "visible": false } },
+      { "talqui": 1, "kind": "command", "name": "registerPushToken", "id": "c-13", "payload": { "token": "fcm-example-token-0123456789abcdef", "platform": "android" } },
+      { "talqui": 1, "kind": "command", "name": "unregisterPushToken", "id": "c-14", "payload": { "token": "fcm-example-token-0123456789abcdef" } },
       { "talqui": 1, "kind": "command", "name": "reset", "id": "c-6", "payload": {} }
     ],
     "invalid": [
