@@ -99,3 +99,8 @@ export function normalizeMeta(meta: TalquiMeta, warn: (message: string) => void)
   }
   return out;
 }
+
+/** Whether a push message was sent by Talqui (check the message's `data`). */
+export function isTalquiPush(data: Record<string, unknown> | null | undefined): boolean {
+  return data?.talqui === '1';
+}

@@ -6,12 +6,16 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 import { TalquiChat, TalquiProvider, useTalqui, useTalquiEvent } from '@talqui-oss/talqui-sdk-reactnative';
 
+import { useTalquiPush } from './push';
 import { TALQUI_BASE_URL, TALQUI_CONNECTION_ID, TALQUI_TENANT_ID } from './talqui.config';
 
 const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
   const talqui = useTalqui();
+
+  // Replies while the app is closed: off here, see push.ts to turn it on.
+  useTalquiPush(talqui);
 
   // Your analytics, a banner, a sound: every chat event is available.
   useTalquiEvent('messageReceived', (event) => console.log('New message:', event.preview));

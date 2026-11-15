@@ -15,6 +15,7 @@ import {
   buildChatUrl,
   commandScript,
   DEFAULT_BASE_URL,
+  isTalquiPush,
   isUuid,
   normalizeMeta,
   parseEvent,
@@ -211,12 +212,17 @@ export function TalquiProvider(props: TalquiProviderProps) {
     });
   }, []);
 
+  // The device's push token outlives a logout (it is the phone's, not the user's).
+  const pushToken = useRef<string | null>(null);
+  const platform = Platform.OS === 'ios' || Platform.OS === 'android' ? Platform.OS : null;
+
   const replayAll = useCallback(() => {
     const state = replay.current;
     if (state.contact) send('setContact', state.contact);
     if (Object.keys(state.contactMeta).length) send('setContactMeta', state.contactMeta);
     if (Object.keys(state.sessionMeta).length) send('setSessionMeta', state.sessionMeta);
     send('setVisibility', { visible: visibleRef.current });
+    if (pushToken.current) send('registerPushToken', { token: pushToken.current, platform });
     // A freshly loaded page shows the control again.
     pageCloseButton.current = true;
     syncCloseButton();
@@ -224,7 +230,7 @@ export function TalquiProvider(props: TalquiProviderProps) {
       send('prefill', { text: state.prefill });
       state.prefill = null;
     }
-  }, [send, syncCloseButton]);
+  }, [send, syncCloseButton, platform]);
 
   const closeOverlay = useCallback(() => setIsOpen(false), []);
   const inlineRef = useRef(inline);
@@ -331,6 +337,8 @@ export function TalquiProvider(props: TalquiProviderProps) {
           unsubscribe();
           resolve();
         }
+        // The next person on this phone must not get this user's replies.
+        if (pushToken.current) send('unregisterPushToken', { token: pushToken.current });
         send('reset', {});
       });
     }
@@ -389,6 +397,8 @@ export function TalquiProvider(props: TalquiProviderProps) {
         setSessionMeta: unsupported,
         prefill: unsupported,
         logout: async () => unsupported(),
+        setPushToken: unsupported,
+        handlePush: () => false,
         unreadCount: 0,
         isReady: false,
         isOpen: false,
@@ -417,11 +427,24 @@ export function TalquiProvider(props: TalquiProviderProps) {
         else replay.current.prefill = trimmed;
       },
       logout,
+      setPushToken: (token) => {
+        const trimmed = typeof token === 'string' ? token.trim() : '';
+        if (!trimmed) return;
+        pushToken.current = trimmed;
+        send('registerPushToken', { token: trimmed, platform });
+      },
+      handlePush: (data) => {
+        if (!isTalquiPush(data) || data?.tenantId !== tenantId) return false;
+        setOwner('overlay');
+        setOverlayMounted(true);
+        setIsOpen(true);
+        return true;
+      },
       unreadCount,
       isReady,
       isOpen,
     };
-  }, [supported, warn, closeOverlay, identify, setContact, setMeta, send, logout, unreadCount, isReady, isOpen]);
+  }, [supported, warn, closeOverlay, identify, setContact, setMeta, send, logout, unreadCount, isReady, isOpen, platform, tenantId]);
 
   // --- rendering --------------------------------------------------------------------------------
   const renderWebView = useCallback(

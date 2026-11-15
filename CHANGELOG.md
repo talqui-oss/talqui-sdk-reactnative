@@ -1,3 +1,7 @@
+## Unreleased
+
+- Push notifications: `setPushToken`, `handlePush` and `isTalquiPush`. `logout()` unlinks the device token from the user.
+
 ## 0.1.1
 
 - `AGENT_INSTRUCTIONS.md`: quick install guide for AI coding agents.

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
-import { buildChatUrl, commandScript, normalizeMeta, parseEvent, USER_HASH_PATTERN } from '../src/protocol.ts';
+import { buildChatUrl, commandScript, isTalquiPush, normalizeMeta, parseEvent, USER_HASH_PATTERN } from '../src/protocol.ts';
 
 const fixtures = JSON.parse(readFileSync(new URL('../bridge-fixtures/v1.json', import.meta.url), 'utf8'));
 const TENANT = 'a0047199-8537-4f7d-bef8-2fae04a7ffd6';
@@ -77,4 +77,11 @@ test('userHash must look like a hash, not a raw id', () => {
   assert.ok(USER_HASH_PATTERN.test('f'.repeat(64)));
   assert.ok(!USER_HASH_PATTERN.test('123'));
   assert.ok(!USER_HASH_PATTERN.test('user@example.com'.padEnd(40, 'x')));
+});
+
+test('recognizes only Talqui push messages', () => {
+  assert.equal(isTalquiPush({ talqui: '1', tenantId: TENANT }), true);
+  assert.equal(isTalquiPush({ talqui: 1 }), false);
+  assert.equal(isTalquiPush({ type: 'promo' }), false);
+  assert.equal(isTalquiPush(undefined), false);
 });

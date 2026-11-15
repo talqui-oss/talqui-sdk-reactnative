@@ -1,4 +1,5 @@
 export { TalquiProvider, useTalqui, useTalquiEvent } from './TalquiProvider';
+export { isTalquiPush } from './protocol';
 export type { TalquiProviderProps } from './TalquiProvider';
 export { TalquiChat } from './TalquiChat';
 export type { TalquiChatProps } from './TalquiChat';
