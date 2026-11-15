@@ -14,6 +14,8 @@
 <div align="center">
 <a href="https://docs.talqui.chat/guides/chat-sdks/react-native">Documentation</a>
 <span> · </span>
+<a href="https://github.com/talqui-oss/talqui-sdk-reactnative/blob/main/AGENT_INSTRUCTIONS.md">AI agent instructions</a>
+<span> · </span>
 <a href="https://www.npmjs.com/package/@talqui-oss/talqui-sdk-reactnative">npm</a>
 <span> · </span>
 <a href="./example">Example app</a>
@@ -66,6 +68,8 @@ What your users see, from the [example app](https://github.com/talqui-oss/talqui
 | Android | 7.0 (API 24) |
 
 ## Install
+
+> Using an AI coding agent? Point it to [`AGENT_INSTRUCTIONS.md`](https://github.com/talqui-oss/talqui-sdk-reactnative/blob/main/AGENT_INSTRUCTIONS.md): a step-by-step install it can follow and validate on its own.
 
 ```bash
 npx expo install @talqui-oss/talqui-sdk-reactnative react-native-webview @react-native-async-storage/async-storage
