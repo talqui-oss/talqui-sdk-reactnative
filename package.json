@@ -1,6 +1,6 @@
 {
   "name": "@talqui-oss/talqui-sdk-reactnative",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Live chat SDK for React Native and Expo: in-app customer support chat with your team, bots and AI agents.",
   "license": "MIT",
   "author": "Talqui",
@@ -51,7 +51,8 @@
     "dist",
     "src",
     "README.md",
-    "LICENSE.md"
+    "LICENSE.md",
+    "AGENT_INSTRUCTIONS.md"
   ],
   "sideEffects": false,
   "scripts": {
